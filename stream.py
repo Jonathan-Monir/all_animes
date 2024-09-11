@@ -93,8 +93,8 @@ output_path = f"from_{min_page}_to_{max_page}_{anime_name}"
 if submit_button:
     for page in pages:
         print("Starting chapter", page)
-        url = url + f'{page}/'
-        image_urls = web_scrape(url)
+        ch_url = url + f'{page}/'
+        image_urls = web_scrape(ch_url)
         chapter_size = save_images_to_folder(image_urls, f'from_{min_page}_to_{max_page}_{anime_name}', page, convert_to_cbz)
         total_size += chapter_size
 
