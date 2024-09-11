@@ -15,10 +15,14 @@ if url != "" and url[-1] == '/':
 
 anime_name = st.text_input("anime name")
 
+#id = st.checkbox("id")
+#href = st.checkbox("href")
+#decoding = st.checkbox("decoding")
+#title = st.checkbox("title")
 def web_scrape(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    images = soup.find_all('img', src = True, decoding = True)
+    images = soup.find_all('img', src = True)
 
     image_urls = [image['src'] for image in images if 'http' in image['src']]
     return image_urls
