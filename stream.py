@@ -7,6 +7,8 @@ import zipfile
 import io
 import re
 
+data = {"berserk": "https://theberserk.online/manga/berserk-chapter-0-0"}
+st.table(data)
 url = st.text_input("URL to download")
 if url != "" and url[-1] == '/': 
     url = url[:-1]
@@ -51,7 +53,9 @@ def sort_filenames(filenames):
 
 def save_images_to_folder(image_urls, folder_name, chapter, convert_to_cbz=True):
     create_folder(folder_name)
+    num_images = len(image_urls)
     chapter_size = 0
+    progress_bar = st.progress(0, text=f"Downloading images for Chapter {chapter}")
     for page_number, url in enumerate(image_urls, 1):
         try:
             img_size = download_image(url, chapter, page_number)
@@ -59,6 +63,8 @@ def save_images_to_folder(image_urls, folder_name, chapter, convert_to_cbz=True)
             os.rename(f'chapter_{chapter}_page_{page_number}.jpg', f'{folder_name}/chapter_{chapter}_page_{page_number}.jpg')
         except Exception as e:
             print(f"Failed to download image: {page_number} in chapter: {chapter} - {e}")
+        progress = (page_number / num_images) * 100
+        progress_bar.progress(int(progress), text=f"Downloading image {page_number}/{num_images} with size {chapter_size / (1024 * 1024):.2f} MB")
 
 
     st.write(f"Total size for chapter {chapter}: {chapter_size / (1024 * 1024):.2f} MB")  # Print size in MB
